@@ -9,8 +9,7 @@ install:
   - sudo apt-get install python-pip libarchive-dev
   - pip install -r requirements.txt
   - pip install coveralls
-  - pip install coverage
 
 script:
-  - cd tests && coverage run run_tests.py
+  - cd tests
 
