@@ -2,6 +2,7 @@
 
 [![Code Health](https://landscape.io/github/ArthurMoore85/pi_romulus/master/landscape.svg?style=flat)](https://landscape.io/github/ArthurMoore85/pi_romulus/master)
 [![Build Status](https://travis-ci.org/ArthurMoore85/pi_romulus.svg?branch=master)](https://travis-ci.org/ArthurMoore85/pi_romulus)
+[![Coverage Status](https://coveralls.io/repos/github/ArthurMoore85/pi_romulus/badge.svg?branch=master)](https://coveralls.io/github/ArthurMoore85/pi_romulus?branch=master)
 
 Retropie ROM downloader
 
