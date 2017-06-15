@@ -1,5 +1,7 @@
 # Pi Romulus
 
+[![Code Health](https://landscape.io/github/ArthurMoore85/pi_romulus/master/landscape.svg?style=flat)](https://landscape.io/github/ArthurMoore85/pi_romulus/master)
+
 Retropie ROM downloader
 
 Based on Romulus, the Linux Retropie ROM manager, Pi Romulus is intended to fill a gaping hole
