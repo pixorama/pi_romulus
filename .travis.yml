@@ -8,6 +8,9 @@ python:
 install:
   - sudo apt-get install python-pip libarchive-dev
   - pip install -r requirements.txt
+  - pip install coveralls
 
 script:
   - cd tests && python run_tests.py
+after_success:
+    coveralls
