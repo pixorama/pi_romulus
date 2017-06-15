@@ -50,7 +50,7 @@ class Compression(object):
         Extracts contents of 7z file
         :param file_obj: file to be used.
         """
-        for entry in libarchive.public.file_pour(file_obj):
+        for _ in libarchive.public.file_pour(file_obj):
             continue
 
     def unrar(self, file_obj):
