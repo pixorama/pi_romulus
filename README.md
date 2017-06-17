@@ -18,6 +18,7 @@ Features:
 * Automatic detection of required emulator
 * Automatic ROM extraction, if ROM arrives in an archive
 * Places ROMs in the correct folder for direct playability
+* Pi Romulus entry in EmulationStation (not tested)
 
 Technical Details
 -----------------
@@ -28,7 +29,8 @@ Installation
 ------------
 Clone this app into a folder on your Retropie. If it isnt already installed, install pip and libarchive: `sudo apt-get install python-pip libarchive-dev`.
 After this, install all the requirements with `pip install -r requirements.txt`
-Once completed, run `python romulus.py` to start the app, or create a shortcut.
+Once completed, run `python romulus.py` to start the app.
+Note, if this is the first time you run Pi Romulus, it will create a shortcut into your EmulationStation menu (not tested)
 
 Developers
 ----------
