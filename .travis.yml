@@ -6,10 +6,13 @@ python:
   - 2.7
 
 install:
-  - sudo apt-get install python-pip libarchive-dev
+  - sudo apt-get install libarchive-dev
   - pip install -r requirements.txt
   - pip install coveralls
 
 script:
+# Currently doesn't do a lot. Just checking if installation works. Tests to
+# be added for v2. As they will be on PyQt which is more test friendly than
+# npyscreen
   - cd forms
 
