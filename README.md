@@ -1,4 +1,7 @@
-# Pi Romulus
+# Pi Romulus v.1.1
+
+_Please note that this branch is currently not recommended. The code is currently experimental and not
+recommended for daily use. For a stable version please select the Master branch._
 
 [![Code Health](https://landscape.io/github/ArthurMoore85/pi_romulus/master/landscape.svg?style=flat)](https://landscape.io/github/ArthurMoore85/pi_romulus/master)
 [![Build Status](https://travis-ci.org/ArthurMoore85/pi_romulus.svg?branch=master)](https://travis-ci.org/ArthurMoore85/pi_romulus)
@@ -27,13 +30,16 @@ For it's GUI framework it makes use of the excellent npyscreen library.
 
 Installation
 ------------
-Step 1. Install requirements: `sudo apt-get install python-pip libarchive-dev`
+_Note: all commands are entered from the command line, which can be activated by hitting F4 on your keyboard in
+EmulationStation._
 
-To install using PIP: `sudo pip install pi-romulus`. 
+The easiest way to install Pi Romulus is using PIP.
+Simply enter the following command on the command line: `pip install pi-romulus`. 
 After this, you should be able to start Pi Retropie with the command `pi-romulus`.
 
 To install from source:
 
+Install requirements: `sudo apt-get install libarchive-dev`
 Clone this app into a folder on your Retropie.
 After this, install all the requirements with `pip install -r requirements.txt`.
 
@@ -54,4 +60,4 @@ You can also reach out to me directly.
 
 Authors
 -------
-Arthur Moore <arthur.moore85@gmail.com>
+[Click here to send an email to the maintainer, Arthur Moore](mailto:arthur.moore85@gmail.com)
