@@ -35,7 +35,12 @@ class App(npyscreen.NPSAppManaged):
             create_bash(self.ROOT_DIR)
         self.addForm('MAIN', SearchForm, name="Search for ROM")
 
-
-if __name__ == '__main__':
+def main(args=None):
+    """
+    Main call for running off a cmd line.
+    """
     app = App()
     app.run()
+
+if __name__ == '__main__':
+    main()
