@@ -1,15 +1,17 @@
-language: python
-
-python:
-  - 2.7
-
-install:
+image: "python:2.7"
+services:
+  - mongo:latest
+variables:
+  MONGO_DB: test
+before_script:
+  - python --version
+  - pip install virtualenv
   - sudo apt-get install python-pip libarchive-dev
   - pip install -r requirements.txt
   - pip install coveralls
   - pip install coverage
-
-script:
-  - cd tests && coverage run run_tests.py
-after_success:
-    coveralls
+stages:
+  - test
+test:
+  stage: test
+  script: cd tests && coverage run run_tests.py
