@@ -1,17 +1,16 @@
-image: "python:2.7"
-services:
-  - mongo:latest
-variables:
-  MONGO_DB: test
-before_script:
-  - python --version
-  - pip install virtualenv
-  - sudo apt-get install python-pip libarchive-dev
-  - pip install -r requirements.txt
-  - pip install coveralls
-  - pip install coverage
-stages:
+image: python:latest
+
+types:
+  - build
   - test
-test:
-  stage: test
-  script: cd tests && coverage run run_tests.py
+
+build_app:
+  type: build
+  script: echo Building!
+
+test_app:
+  type: test
+  script: 
+    - cd dungeoneer
+    - pip install -r requirements.txt
+    - python manage.py test
