@@ -11,6 +11,5 @@ build_app:
 test_app:
   type: test
   script: 
-    - cd dungeoneer
     - pip install -r requirements.txt
     - python manage.py test
