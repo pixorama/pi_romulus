@@ -138,12 +138,23 @@ class Scraper(object):
         After which we will download the file required.
         """
         link = self.download_link(url)
+        req = urllib2.Request(link)
+        req.add_header('Referer', 'https://www.emuparadise.me/')
         file_name = urllib2.unquote(link.split('/')[-1])
         target_file_name = os.path.join(location, file_name)
         urllib.urlretrieve(link, target_file_name)
         f = urllib2.urlopen(link)
-        data = f.read()
         with open(target_file_name, 'wb') as code:
-            code.write(data)
+            total_length = f.headers.get('content-length')
+            if not total_length:
+                code.write(f.content)
+            else:
+                total_length = int(total_length)
+                while True:
+                    data = f.read(total_length / 100)
+                    if not data:
+                        break
+                    code.write(data)
+
         ex = Compression(location)
         ex.extract(target_file_name)
