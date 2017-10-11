@@ -12,6 +12,6 @@ test_app:
   type: test
   script: 
     - apt-get update
-    - apt-get install python-pip libarchive-dev
+    - apt-get -y install python-pip libarchive-dev
     - pip install -r requirements.txt
     - python manage.py test
