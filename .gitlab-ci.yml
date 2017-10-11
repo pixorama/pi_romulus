@@ -1,4 +1,4 @@
-image: python:latest
+image: ubuntu:latest
 
 types:
   - build
@@ -11,5 +11,6 @@ build_app:
 test_app:
   type: test
   script: 
+    - sudo apt-get install python-pip libarchive-dev
     - pip install -r requirements.txt
     - python manage.py test
