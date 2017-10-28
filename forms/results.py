@@ -28,7 +28,7 @@ class ResultsForm(npyscreen.ActionForm):
             self.search = self.parentApp.SCRAPER_OBJ
             self.download_link = self.search.get_link(selection)
             npyscreen.notify("Please wait while Romulus downloads this ROM...", "Downloading")
-            self.d = Download(self.search)
+            self.d = Download(search=self.search)
             self.d.download(self.download_link)
             npyscreen.notify("The ROM is now available on EmulationStation", "Success")
             self.parentApp.setNextForm('MAIN')

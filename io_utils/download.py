@@ -5,25 +5,26 @@
 :author: Arthur Moore <arthur.moore85@gmail.com>
 :date: 31/12/16
 """
-from io_utils.directory_utils import Directories
+from .directory_utils import Directories
+from .platform_io import PlatformBase
 
 __author__ = 'arthur'
 
 
-class Download(object):
+class Download(PlatformBase):
     """
     Downloads a ROM/Game
     """
-    def __init__(self, scraper_obj):
+    def __init__(self, *args, **kwargs):
+        super(Download, self).__init__()
         self.url = None
         self.dirs_obj = Directories()
-        self.base_dir = '/home/pi/RetroPie/roms'
-        self.scrape = scraper_obj
+        self.search = kwargs.get('search')
 
     def download(self, rom_url):
         """
         Downloads the ROM
         """
         platform = " ".join(rom_url.split('/')[3].replace('_', ' ').split()[:-1])
-        target = self.dirs_obj.target_directory(self.base_dir, platform)
-        self.scrape.download(rom_url, target)
+        target = self.dirs_obj.target_directory(self.download_location, platform)
+        self.search.download(rom_url, target)
