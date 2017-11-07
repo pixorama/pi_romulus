@@ -68,6 +68,20 @@ class UnavailableException(ApiException):
     pass
 
 
+class MissingEndpointException(ApiException):
+    """
+    Raised when endpoint is missing.
+    """
+    pass
+
+
+class UnknownURLException(ApiException):
+    """
+    Raised when the base URL is missing.
+    """
+    pass
+
+
 def handle_response_codes(status_code):
     """
     Handles the exceptions for various types of
@@ -102,6 +116,14 @@ def handle_response_codes(status_code):
     elif status_code == 503:
         raise UnavailableException(
             'URL is unavailable.'
+        )
+    elif status_code == 'missing_endpoint':
+        raise MissingEndpointException(
+            'Endpoint could not be found.'
+        )
+    elif status_code == 'missing_base_url':
+        raise UnknownURLException(
+            'Base URL has not been set.'
         )
     else:
         raise ApiException('An error occurred')

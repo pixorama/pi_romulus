@@ -34,3 +34,22 @@ class EmuApi(Api):
         self._parser = HTMLParser.HTMLParser()
         self.endpoints = ENDPOINTS
         self.response = self.get_response()
+        self.search_regex = '<div class="roms">' \
+                            '<a .*?href="(.*?)">(.*?)</a>.*?' \
+                            '<a href="\/roms\/roms\.php\?sysid=(\d+)".*?class="sysname">' \
+                            '(.*?)</a>.*?<b>Size:</b> (.*?) .*?</div>'
+
+    def get_download_url(self, item):
+        """
+        Download the selected ROM
+        :param item: ResultItem object.
+        """
+        return self.base_url + item.download_url
+
+    def download(self, result_item):
+        """
+        Downloads a ROM
+        :param result_item: ResultItem
+        """
+        download_url = self.base_url + result_item.download_url
+

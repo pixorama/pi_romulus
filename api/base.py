@@ -10,10 +10,13 @@
 from __future__ import unicode_literals
 
 from bs4 import BeautifulSoup
+import mechanize
 
 import re
 import requests
+from requests import ConnectionError
 
+from api.resultset import ResultSet
 from .exceptions import handle_response_codes
 
 __author__ = "arthur"
@@ -41,7 +44,10 @@ class Api(object):
             url = self.current_url
         else:
             url = self.base_url
-        r = requests.get(url)
+        try:
+            r = requests.get(url)
+        except ConnectionError:
+            raise ConnectionError('No internet connection determined.')
         self.status_code = r.status_code
 
         if self.status_code == 200:
@@ -62,6 +68,36 @@ class Api(object):
         self.referrer = url
         return requests.get(url, **extra)
 
+    def _get_full_url(self, endpoint):
+        """
+        Retrieves full URL for a given endpoint if possible.
+        Will raise an Exception if no full URL could be found.
+        """
+        suffix = self.endpoints.get(endpoint)
+        if not suffix:
+            handle_response_codes('missing_endpoint')
+        if not self.base_url:
+            handle_response_codes('missing_base_url')
+        self.current_url = self.base_url + suffix
+        return self.current_url
+
+    def _dictify_search(self, results):
+        """
+        Returns dictionary/json-like results.
+        """
+        search_results = {}
+        count = 0
+        for r in results:
+            search_results[count] = {
+                'system_id': r[2],
+                'system': r[3],
+                'game': r[1],
+                'url': r[0],
+                'filesize': r[4]
+            }
+            count += 1
+        return search_results
+
     def search(self, query, system=0):
         """
         Searches URL for media.
@@ -69,10 +105,23 @@ class Api(object):
         :param system: System type
         :return: Dictionary of results.
         """
-        return re.findall(
+        search_url = self._get_full_url('search')
+        search_results = re.findall(
             self.search_regex,
             self._site_request(
-                self.endpoints.get('search'),
+                search_url,
                 data=dict(query=query, section='roms', sysid=system)
             ).content
         )
+        results = ResultSet(results=search_results)
+        return results
+
+    def download(self, result_item):
+        """
+        Downloads a ROM.
+        :param result_item: ResultItem object.
+        """
+        download_url = self.base_url + result_item.download_url
+
+        br = mechanize.Browser()
+        br.open(download_url)
