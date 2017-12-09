@@ -20,7 +20,18 @@ class ResultSet(object):
     """
     def __init__(self, *args, **kwargs):
         self._raw_item_objects = kwargs.get('results', [])
+        self._caller = kwargs.get('caller', None)
         self._item_objects = self._create_objects()
+
+    def _get_download_id(self, url):
+        """
+        Returns a Download ID if possible (Emuparadise)
+        """
+        code = url.split('/')[-1]
+        try:
+            return int(code)
+        except ValueError:
+            return None
 
     def _create_objects(self):
         """
@@ -30,9 +41,11 @@ class ResultSet(object):
         count = 0
 
         for item in self._raw_item_objects:
-            objs.append(ResultItem(id=count, download_url=item[0], name=item[1],
-                       system_id=item[2], system=item[3],
-                       filesize=item[4]))
+            download_id = self._get_download_id(item[0])
+            download_url = self._caller.download_url if self._caller.download_url else item[0]
+            objs.append(ResultItem(id=count, download_url=download_url, name=item[1],
+                       system_id=item[2], system=item[3], download_id=download_id,
+                       filesize=item[4], token=self._caller.token))
             count += 1
         return set(objs)
 

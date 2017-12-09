@@ -7,7 +7,7 @@
 """
 import npyscreen
 
-from api.emuapi import EmuApi
+from api.providers.emuapi import EmuApi
 from io_utils.download import Download
 
 __author__ = 'arthur'
@@ -33,8 +33,8 @@ class ResultsForm(npyscreen.ActionForm):
             self.emu.download(selection)
             # self.download_link = self.search.get_link(selection)
             npyscreen.notify("Please wait while Romulus downloads this ROM...", "Downloading")
-            self.d = Download()
-            self.d.download(self.download_link, platform=selection.system)
+            # self.d = Download()
+            # self.d.download(self.download_link, platform=selection.system)
             npyscreen.notify("The ROM is now available on EmulationStation", "Success")
             self.parentApp.setNextForm('MAIN')
         except TypeError:

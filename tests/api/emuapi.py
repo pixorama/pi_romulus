@@ -11,7 +11,7 @@ from __future__ import unicode_literals
 
 import unittest
 
-from api.emuapi import EmuApi
+from api.providers import EmuApi
 from api.resultset import ResultSet
 
 __author__ = "arthur"

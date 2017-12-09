@@ -9,6 +9,10 @@
 """
 from __future__ import unicode_literals
 
+import os
+import urllib
+import urllib2
+
 from bs4 import BeautifulSoup
 import mechanize
 
@@ -17,6 +21,8 @@ import requests
 from requests import ConnectionError
 
 from api.resultset import ResultSet
+from io_utils.compression import Compression
+from io_utils.platform_io import PlatformBase
 from .exceptions import handle_response_codes
 
 __author__ = "arthur"
@@ -34,6 +40,10 @@ class Api(object):
         self.search_regex = None
         self.referrer = None
         self.endpoints = {}
+        self.download_url = None
+        self.requires_arguments = False
+        self.download_arguments = {}
+        self.token = None
 
     def get_response(self):
         """
@@ -74,7 +84,7 @@ class Api(object):
         Will raise an Exception if no full URL could be found.
         """
         suffix = self.endpoints.get(endpoint)
-        if not suffix:
+        if not suffix and suffix != '':
             handle_response_codes('missing_endpoint')
         if not self.base_url:
             handle_response_codes('missing_base_url')
@@ -113,7 +123,7 @@ class Api(object):
                 data=dict(query=query, section='roms', sysid=system)
             ).content
         )
-        results = ResultSet(results=search_results)
+        results = ResultSet(results=search_results, caller=self)
         return results
 
     def download(self, result_item):
@@ -121,7 +131,34 @@ class Api(object):
         Downloads a ROM.
         :param result_item: ResultItem object.
         """
-        download_url = self.base_url + result_item.download_url
+        # link = self.base_url + result_item.download_url
+        link = result_item.download_url
+        location = os.path.join(PlatformBase().download_location, result_item.system_dir)
 
-        br = mechanize.Browser()
-        br.open(download_url)
+        # Check if the ROM directory exists, if not, create it.
+        if not os.path.exists(location):
+            os.makedirs(location)
+
+        req = urllib2.Request(self.base_url)
+        req.add_header('Referer', 'https://www.emuparadise.me/')
+        # target_file_name = os.path.join(location, file_name)
+        # urllib.urlretrieve(link, target_file_name)
+        f = urllib2.urlopen(link)
+        hard_link = f.url
+        filename = urllib2.unquote(hard_link.split('/')[-1])
+        target_file_name = os.path.join(location, filename)
+        urllib.urlretrieve(hard_link, target_file_name)
+        # with open(target_file_name, 'wb') as code:
+        #     total_length = f.headers.get('content-length')
+        #     if not total_length:
+        #         code.write(f.content)
+        #     else:
+        #         total_length = int(total_length)
+        #         while True:
+        #             data = f.read(total_length / 100)
+        #             if not data:
+        #                 break
+        #             code.write(data)
+        #
+        # ex = Compression(location)
+        # ex.extract(target_file_name)

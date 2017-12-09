@@ -26,6 +26,17 @@ COUNTRIES = {
     '(U)': USA
 }
 
+SYSTEMS = {
+    'Amstrad CPC': 'amstradcpc', 'Atari 2600': 'atari2600', 'Atari 7800': 'atari7800', 'Atari Lynx': 'atarilynx',
+    'M.A.M.E. - Multiple Arcade Machine Emulator': 'mame-libretro',
+    'Neo Geo': 'neogeo', 'Neo Geo Pocket - Neo Geo Pocket Color': 'ngp', 'Nintendo 64': 'n64',
+    'Nintendo Entertainment System': 'nes', 'Nintendo Famicom Disk System': 'fds', 'Nintendo Game Boy': 'gb',
+    'Nintendo Game Boy Color': 'gbc', 'Nintendo Gameboy Advance': 'gba', 'PC Engine - TurboGrafx16': 'pcengine',
+    'PSP': 'psp', 'Sega 32X': 'sega32x', 'Sega CD': 'segacd', 'Sega Game Gear': 'gamegear',
+    'Sega Genesis - Sega Megadrive': 'megadrive', 'Sega Master System': 'mastersystem', 'Sony Playstation': 'psx',
+    'Super Nintendo Entertainment System': 'snes', 'ZX Spectrum': 'zxspectrum'
+}
+
 
 class ResultItem(object):
     """
@@ -35,16 +46,23 @@ class ResultItem(object):
         self.id = kwargs.get('id')
         self.has_country = False
         self.country = 'Unknown'
-        self.download_url = kwargs.get('download_url') + '-download'
         self.system_id = kwargs.get('system_id')
         self.system = self._clean_system(kwargs.get('system'))
+        self.system_dir = SYSTEMS.get(self.system, '')
         self.filesize_gb = 0
         self.filesize_mb = 0
         self.filesize_kb = 0
         self.name = self._clean_name(kwargs.get('name'))
-        self.download_id = self._get_download_id()
+        self.file_name = '_'.join(self.name.split())
+        self.download_id = kwargs.get('download_id')
+        self.token = kwargs.get('token')
 
         self._clean_filesize(kwargs.get('filesize'))
+        self._arguments = {
+            'download_id': self.download_id,
+            'token': self.token
+        }
+        self.download_url = kwargs.get('download_url').format(**self._arguments)
 
     def __repr__(self):
         return '<ResultItem: {0} - {1}>'.format(self.id, self.name)
@@ -94,33 +112,24 @@ class ResultItem(object):
         Sets the filesizes.
         """
         filesize = filesize.upper()
-        if '.' in filesize:
-            first_val, second_val = filesize.split('.')
-            denom_type = second_val[-1]
-            second_val = second_val[:-1]
+        if filesize:
+            if '.' in filesize:
+                first_val, second_val = filesize.split('.')
+                denom_type = second_val[-1]
+                second_val = second_val[:-1]
 
-            first_val = int(first_val)
-            second_val = int(second_val)
-        else:
-            denom_type = filesize[-1]
-            first_val = int(filesize[:-1])
-            second_val = 0
-
-        if denom_type == 'K':
-            self.filesize_kb = first_val
-        if denom_type == 'M':
-            self.filesize_mb = first_val
-            self.filesize_kb = second_val * 100
-        if denom_type == 'G':
-            self.filesize_gb = first_val
-            self.filesize_mb = second_val * 100
-
-    def _get_download_id(self):
-        """
-        Returns a Download ID if possible (Emuparadise)
-        """
-        code = self.download_url.split('/')[-1]
-        try:
-            return int(code)
-        except ValueError:
-            return None
+                first_val = int(first_val)
+                second_val = int(second_val)
+            else:
+                denom_type = filesize[-1]
+                first_val = int(filesize[:-1])
+                second_val = 0
+                
+            if denom_type == 'K':
+                self.filesize_kb = first_val
+            if denom_type == 'M':
+                self.filesize_mb = first_val
+                self.filesize_kb = second_val * 100
+            if denom_type == 'G':
+                self.filesize_gb = first_val
+                self.filesize_mb = second_val * 100

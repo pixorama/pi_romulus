@@ -5,12 +5,12 @@
 :author: Arthur Moore <arthur.moore85@gmail.com>
 :date: 31/12/16
 """
-import npyscreen as npyscreen
 import sys
 
-from api.emuapi import EmuApi
+import npyscreen as npyscreen
+
+from api.providers.emuapi import EmuApi
 from forms.results import ResultsForm
-from scraping.scraper import Scraper
 
 __author__ = 'arthur'
 

@@ -38,6 +38,11 @@ class EmuApi(Api):
                             '<a .*?href="(.*?)">(.*?)</a>.*?' \
                             '<a href="\/roms\/roms\.php\?sysid=(\d+)".*?class="sysname">' \
                             '(.*?)</a>.*?<b>Size:</b> (.*?) .*?</div>'
+        self.download_url = 'http://direct.emuparadise.me/roms/get-download.php?gid={download_id}' \
+                            '&token={token}' \
+                            '&mirror_available=true'
+        self.requires_arguments = True
+        self.token = '211217baa2d87c57b360b9a673a12cfd'
 
     def get_download_url(self, item):
         """
@@ -45,11 +50,3 @@ class EmuApi(Api):
         :param item: ResultItem object.
         """
         return self.base_url + item.download_url
-
-    def download(self, result_item):
-        """
-        Downloads a ROM
-        :param result_item: ResultItem
-        """
-        download_url = self.base_url + result_item.download_url
-
