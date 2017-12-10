@@ -3,10 +3,6 @@
 [![Code Health](https://landscape.io/github/ArthurMoore85/pi_romulus/master/landscape.svg?style=flat)](https://landscape.io/github/ArthurMoore85/pi_romulus/master)
 [![Build Status](https://travis-ci.org/ArthurMoore85/pi_romulus.svg?branch=master)](https://travis-ci.org/ArthurMoore85/pi_romulus)
 
-**Notices: 
-1) Main development of Pi Romulus has been moved to https://gitlab.com/arthurmoore85/pi_romulus. This repo will be kept up to date with releases, but not active development.
-2) Pi Romulus currently does not work. This is due to some changes at EmuParadise. I am currently restructuring the code to fix the issue, whilst at the same time making it easier to maintain. Sorry for the inconvenience. Please note that any temporary quick fixes can be submitted through a Pull Request, and I would be happy to add them in.**
-
 Retropie ROM downloader
 
 Based on Romulus, the Linux Retropie ROM manager, Pi Romulus is intended to fill a gaping hole
