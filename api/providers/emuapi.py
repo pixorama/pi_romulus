@@ -10,6 +10,9 @@
 from __future__ import unicode_literals
 
 import HTMLParser
+import urllib2
+
+import requests
 
 from api.base import Api
 
@@ -44,9 +47,32 @@ class EmuApi(Api):
         self.requires_arguments = True
         self.token = '211217baa2d87c57b360b9a673a12cfd'
 
-    def get_download_url(self, item):
+    def get_download_url(self):
         """
-        Download the selected ROM
-        :param item: ResultItem object.
+        Overwrites the get_download_url method to run validation checks.
         """
-        return self.base_url + item.download_url
+        url = super(EmuApi, self).get_download_url()
+
+        # Validate the URL.
+        # EmuParadise will (when token expired etc) redirect the user back
+        # to the original details page. This has a URL ending in the game ID.
+        # However, when the link is a valid DL link, it ends in the filename.
+        # To validate the link, we can check if the ending can be converted to
+        # an int. If it can, we know thats the game ID and thus invalid.
+        try:
+            int(url.split('/')[-1])
+        except ValueError:
+            return url
+        else:
+            # Its an invalid URL, first lets turn the URL into the link
+            url += '-download'
+            r = requests.get(url)
+            data = r.text
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(data)
+            link = self.base_url + soup.find('a', {'id': 'download-link'}).get('href')
+            req = urllib2.Request(link)
+            req.add_header('Referer', 'https://www.emuparadise.me/')
+            f = urllib2.urlopen(req)
+            self.current_url = f.url
+            return f.url

@@ -9,7 +9,7 @@
 """
 from __future__ import unicode_literals
 
-from emuapi import EmuApi
+from .emuapi import EmuApi
 
 __author__ = "arthur"
 

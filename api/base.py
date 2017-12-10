@@ -126,13 +126,20 @@ class Api(object):
         results = ResultSet(results=search_results, caller=self)
         return results
 
+    def get_download_url(self):
+        """
+        Returns a download URL.
+        :return: URL - string
+        """
+        f = urllib2.urlopen(self.current_url)
+        return f.url
+
     def download(self, result_item):
         """
         Downloads a ROM.
         :param result_item: ResultItem object.
         """
-        # link = self.base_url + result_item.download_url
-        link = result_item.download_url
+        self.current_url = result_item.download_url
         location = os.path.join(PlatformBase().download_location, result_item.system_dir)
 
         # Check if the ROM directory exists, if not, create it.
@@ -141,13 +148,10 @@ class Api(object):
 
         req = urllib2.Request(self.base_url)
         req.add_header('Referer', 'https://www.emuparadise.me/')
-        # target_file_name = os.path.join(location, file_name)
-        # urllib.urlretrieve(link, target_file_name)
-        f = urllib2.urlopen(link)
-        hard_link = f.url
-        filename = urllib2.unquote(hard_link.split('/')[-1])
+        self.current_url = self.get_download_url()
+        filename = urllib2.unquote(self.current_url.split('/')[-1])
         target_file_name = os.path.join(location, filename)
-        urllib.urlretrieve(hard_link, target_file_name)
+        urllib.urlretrieve(self.current_url, target_file_name)
         # with open(target_file_name, 'wb') as code:
         #     total_length = f.headers.get('content-length')
         #     if not total_length:

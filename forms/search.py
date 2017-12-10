@@ -9,7 +9,7 @@ import sys
 
 import npyscreen as npyscreen
 
-from api.providers.emuapi import EmuApi
+from api.providers import EmuApi
 from forms.results import ResultsForm
 
 __author__ = 'arthur'
