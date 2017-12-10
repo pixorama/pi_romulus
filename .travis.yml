@@ -6,10 +6,10 @@ python:
   - 2.7
 
 install:
+  - sudo apt-get update
   - sudo apt-get install python-pip libarchive-dev
   - pip install -r requirements.txt
   - pip install coveralls
 
 script:
-  - cd ui
-
+  - python -m unittest discover -s tests.api
