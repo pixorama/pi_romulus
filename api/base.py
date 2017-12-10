@@ -164,5 +164,5 @@ class Api(object):
         #                 break
         #             code.write(data)
         #
-        # ex = Compression(location)
-        # ex.extract(target_file_name)
+        ex = Compression(location)
+        ex.extract(target_file_name)
