@@ -47,7 +47,7 @@ class ResultItem(object):
         self.has_country = False
         self.country = 'Unknown'
         self.system_id = kwargs.get('system_id')
-        self.system = self._clean_system(kwargs.get('system'))
+        self.system = self._clean_system(kwargs.get('system')).strip()
         self.system_dir = SYSTEMS.get(self.system, '')
         self.filesize_gb = 0
         self.filesize_mb = 0
